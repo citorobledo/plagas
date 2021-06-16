@@ -1,0 +1,45 @@
+import Elementos.*
+import Plagas.*
+test "testPlagas" {
+	//test elementos
+	var b1 = new Barrio()
+	b1.elementos([new Hogar(),  new Huerta(),  new Mascota()])
+	//b1.elementos().get(0).nivelSalud(300)
+	b1.elementos().get(0).nivelMugre(10)
+	b1.elementos().get(0).confort(21)
+	b1.elementos().get(1).capacidadProduccion(20)
+	b1.elementos().get(2).nivelSalud(300)
+	
+	
+	assert.that(  b1.elementos().get(0).esBueno() )
+	assert.that(  b1.elementos().get(1).esBueno() )
+	assert.that(  b1.elementos().get(2).esBueno() )
+	assert.that(  b1.esCopado())
+	
+	// test plagas
+	
+	 var p1 = new Plagas()
+	p1.plagasCirculando([new PlagaCucarachas(), new PlagaMosquitos(), new PlagaPulgas(), new PlagaGarrapatas()])
+	p1.plagasCirculando().get(0).poblacion(50)
+	p1.plagasCirculando().get(0).pesoPromedio(11)
+	p1.plagasCirculando().get(1).poblacion(40)
+	
+	
+	assert.that( p1.plagasCirculando().get(0).transmiteEnfermedades() )
+	assert.equals( 40, p1.plagasCirculando().get(1).nivelDanio())
+	
+	b1.elementos().get(0).nivelMugre(50)
+	b1.elementos().get(0).ataqueDePlaga(p1.plagasCirculando().get(0))
+	
+	assert.equals( 75, b1.elementos().get(0).nivelMugre())
+	
+	b1.elementos().get(1).capacidadProduccion(80)
+	b1.elementos().get(1).ataqueDePlaga(p1.plagasCirculando().get(0))
+	
+	assert.equals( 67.5, b1.elementos().get(1).capacidadProduccion() )
+	
+	p1.plagasCirculando().get(0).efectoAtaquePlaga(b1.elementos().get(1))
+	assert.equals( 52.75,  b1.elementos().get(1).capacidadProduccion() )
+	
+	
+}
